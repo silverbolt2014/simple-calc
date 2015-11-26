@@ -7,6 +7,10 @@ public class SimpleCalc {
     JFrame frame;
     JTextField num1TextField;
     JTextField num2TextField;
+    JTextField resultsTextField;
+    JButton goButton;
+    JButton resetButton;
+    JComboBox<String> selectOperationComboBox;
 
     public static void main(String[] args) {
         SimpleCalc simpleCalcGui = new SimpleCalc();
@@ -21,18 +25,18 @@ public class SimpleCalc {
         JLabel num2Label = new JLabel("Number 2");
         JLabel resultsLabel = new JLabel("Results");
 
-        JTextField num1TextField = new JTextField();
-        JTextField num2TextField = new JTextField();
-        JTextField resultsTextField = new JTextField();
+        num1TextField = new JTextField();
+        num2TextField = new JTextField();
+        resultsTextField = new JTextField();
         resultsTextField.setEditable(false);
         
         String[] operationStrings = {"Add", "Minus", "Multiply", "Divide"};
-        JComboBox<String> selectOperationComboBox = new JComboBox<String>(operationStrings);
+        selectOperationComboBox = new JComboBox<String>(operationStrings);
         
-        JButton goButton = new JButton("GO!");
+        goButton = new JButton("GO!");
         goButton.addActionListener( new GoButtonActionListener() );
 
-        JButton resetButton = new JButton("Reset");
+        resetButton = new JButton("Reset");
         resetButton.addActionListener( new ResetButtonActionListener() );
 
         JPanel mainPanel = new JPanel();
@@ -58,14 +62,58 @@ public class SimpleCalc {
     }
     
     public class GoButtonActionListener implements ActionListener {
-        public void actionPerformed(ActionEvent e) {
-            System.out.println("this is go button actionlistener event");
+        public void actionPerformed(ActionEvent event) {
+            //System.out.println("this is go button actionlistener event");
 
+            String num1String = "-1";
+            String num2String = "-1";
+
+            try {
+                num1String = num1TextField.getText();
+                num2String = num2TextField.getText();
+                System.out.println("num1String = " + num1String);
+                System.out.println("num2String = " + num2String);
+            } catch (NullPointerException exception) {
+                exception.printStackTrace();
+            }
+
+
+            int num1;
+            int num2;
+            try {
+                num1 = Integer.parseInt(num1String);
+                num2 = Integer.parseInt(num2String);
+                String operationToPerform = (String) selectOperationComboBox.getSelectedItem();
+                performCalculation(num1, num2, operationToPerform);
+            } catch (NumberFormatException e) {
+                System.out.println("There was a problem with one or more number inputted by the user");
+            }
         }
     }
 
+    void performCalculation(double n1, double n2, String operation) {
+        double result = 0;
+        switch (operation.toLowerCase()) {
+             case "add":
+                System.out.println("Add Selected");
+                result = n1 + n2;
+                break;
+            case "minus":
+                System.out.println("Minus Selected");
+                break;
+            case "multiply":
+                System.out.println("Multiply Selected");
+                break;
+            case "divide":
+                System.out.println("Divide Selected");
+                break;
+        }
+
+        resultsTextField.setText(result + "");
+    }
+
     public class ResetButtonActionListener implements ActionListener {
-        public void actionPerformed(ActionEvent e) {
+        public void actionPerformed(ActionEvent event) {
             System.out.println("this is reset button actionlistener event");
 
         }
